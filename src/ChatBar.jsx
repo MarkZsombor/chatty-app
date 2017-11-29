@@ -22,6 +22,7 @@ class ChatBar extends Component {
         error: ''
       };
       this.props.onUserNameChange(event.target.value);
+      this.refs.message.focus();
     }
   };
 
@@ -56,7 +57,8 @@ class ChatBar extends Component {
           onBlur={this.changeUserNameBlur} />
         <input className="chatbar-message"
           placeholder="Type a message and hit ENTER"
-          onKeyPress={ this.handleKeyPress } />
+          onKeyPress={ this.handleKeyPress }
+          ref="message" />
       </footer>
     );
   }
