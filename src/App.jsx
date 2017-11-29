@@ -6,6 +6,7 @@ import NavBar from './NavBar.jsx';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.socket = null;
     this.state = {
       currentUser: {name: 'Mark'},
       messages : [
@@ -27,31 +28,29 @@ class App extends Component {
   //Adds to state and will update page on new message
   onNewPost(content) {
     console.log('from app', content);
-    console.log('number of messages hopefully', this.state.messages.length);
-    // const newId = this.state.messages.length + 1;
-    // console.log('newid', newId);
-    // const currentUser = this.state.currentUser.name;
-    // console.log('currentname', currentUser);
     const newMessage = {
       id: this.state.messages.length + 1,
       username: this.state.currentUser.name,
       content: content
     };
-    const messages = this.state.messages.concat(newMessage)
-    this.setState({messages: messages})
+    this.socket.send(JSON.stringify(newMessage));
+    // const messages = this.state.messages.concat(newMessage)
+    // this.setState({messages: messages})
+
   }
 
-
-  // componentDidMount() {
-  //   console.log("componentDidMount <App />");
-  //   setTimeout(() => {
-  //     console.log("Simulating incoming message");
-  //     // Add a new message to the list of messages in the data store
-  //     const newMessage = {id: 3, username: "xXxHellspawn14xXx", content: "Anyone know where I can buy some fresh goats blood?"};
-  //     const messages = this.state.messages.concat(newMessage)
-  //     this.setState({messages: messages})
-  //   }, 3000);
-  // }
+  componentDidMount() {
+    this.socket = new WebSocket("ws://localhost:3001");
+    this.socket.addEventListener('open', function (event) {
+      console.log('Hello Server!');
+    });
+    this.socket.addEventListener('message', (msg) => {
+      console.log('per parse json client', msg);
+      msg = JSON.parse(msg.data);
+      console.log('client side json parse', msg);
+      this.setState({messages: this.state.messages.concat(msg)});
+    });
+  }
 
   render() {
     console.log("Rendering </App>");

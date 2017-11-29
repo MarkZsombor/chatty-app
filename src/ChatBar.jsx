@@ -16,17 +16,13 @@ class ChatBar extends Component {
 
 
   handleKeyPress(event) {
+    // Works for object database
     if(event.key == 'Enter') {
       const state = {
         error: ''
       };
-      console.log('pushed the button');
-      console.log('from key press', event.target.value);
       this.props.onNewPost(event.target.value);
       event.target.value = "";
-      // state.content = "";
-      // console.log('state', state);
-      // this.setState(state);
     }
   };
 
