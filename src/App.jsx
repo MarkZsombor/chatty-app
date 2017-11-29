@@ -9,18 +9,7 @@ class App extends Component {
     this.socket = null;
     this.state = {
       currentUser: {name: 'Mark'},
-      messages : [
-      {
-        id: 1,
-        username: 'Mark',
-        content: "how goes"
-      },
-      {
-        id: 2,
-        username: 'Bob',
-        content: 'help i\'m stuck in the app'
-      }
-      ]
+      messages : []
     };
     this.onNewPost = this.onNewPost.bind(this);
   }
@@ -29,7 +18,6 @@ class App extends Component {
   onNewPost(content) {
     console.log('from app', content);
     const newMessage = {
-      id: this.state.messages.length + 1,
       username: this.state.currentUser.name,
       content: content
     };

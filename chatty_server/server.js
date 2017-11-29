@@ -1,6 +1,7 @@
 
 const express = require('express');
 const SocketServer = require('ws').Server;
+const newId = require('uuid/v1');
 
 // Set the port to 3001
 const PORT = 3001;
@@ -23,11 +24,11 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
 
   ws.on('message', (message) => {
-    // message = JSON.parse(message);
-    console.log(message);
+    message = JSON.parse(message);
+    message.id = newId();
     clients.forEach((client) => {
       if (client.readyState == ws.OPEN) {
-        client.send(message);
+        client.send(JSON.stringify(message));
       }
     });
   });
