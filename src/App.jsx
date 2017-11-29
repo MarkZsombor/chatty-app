@@ -15,34 +15,33 @@ class App extends Component {
     this.onUserNameChange = this.onUserNameChange.bind(this);
   }
 
-  //Adds to state and will update page on new message
+  //Adds to message list and will update page on new message
   onNewPost(content) {
     console.log('from app', content);
     let userName = this.state.currentUser.name;
+    //If no current username, give a default value
     if (!userName) userName = 'anonymous';
     const newMessage = {
       username: userName,
       content: content
     };
     this.socket.send(JSON.stringify(newMessage));
-    // const messages = this.state.messages.concat(newMessage)
-    // this.setState({messages: messages})
   }
 
+  //changes state of currentUser
   onUserNameChange(newName) {
-    console.log("new name", newName);
     this.setState({currentUser: {name: newName }});
   }
 
   componentDidMount() {
     this.socket = new WebSocket("ws://localhost:3001");
+    //Logs a message when client connects to server
     this.socket.addEventListener('open', function (event) {
       console.log('Hello Server!');
     });
+    //takes message from server and renders it to the screen
     this.socket.addEventListener('message', (msg) => {
-      console.log('per parse json client', msg);
       msg = JSON.parse(msg.data);
-      console.log('client side json parse', msg);
       this.setState({messages: this.state.messages.concat(msg)});
     });
   }
@@ -53,7 +52,9 @@ class App extends Component {
       <div>
         <NavBar />
         <MessageList messages={ this.state.messages } />
-        <ChatBar userName={ this.state.currentUser } onNewPost={ this.onNewPost } onUserNameChange={ this.onUserNameChange } />
+        <ChatBar userName={ this.state.currentUser }
+          onNewPost={ this.onNewPost }
+          onUserNameChange={ this.onUserNameChange } />
       </div>
     );
   }

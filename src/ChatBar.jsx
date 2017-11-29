@@ -22,6 +22,7 @@ class ChatBar extends Component {
         error: ''
       };
       this.props.onUserNameChange(event.target.value);
+      //changes the screen focus to the message input on enter
       this.refs.message.focus();
     }
   };

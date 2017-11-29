@@ -23,6 +23,7 @@ wss.on('connection', (ws) => {
   clients.push(ws);
   console.log('Client connected');
 
+  // Takes a message from a client, adds a unique id, and sends it to all clients
   ws.on('message', (message) => {
     message = JSON.parse(message);
     message.id = newId();
