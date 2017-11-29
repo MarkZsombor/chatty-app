@@ -12,6 +12,7 @@ class App extends Component {
       messages : []
     };
     this.onNewPost = this.onNewPost.bind(this);
+    this.onUserNameChange = this.onUserNameChange.bind(this);
   }
 
   //Adds to state and will update page on new message
@@ -24,7 +25,11 @@ class App extends Component {
     this.socket.send(JSON.stringify(newMessage));
     // const messages = this.state.messages.concat(newMessage)
     // this.setState({messages: messages})
+  }
 
+  onUserNameChange(newName) {
+    console.log("new name", newName);
+    this.setState({currentUser: {name: newName }});
   }
 
   componentDidMount() {
@@ -46,7 +51,7 @@ class App extends Component {
       <div>
         <NavBar />
         <MessageList messages={ this.state.messages } />
-        <ChatBar userName={ this.state.currentUser } onNewPost={ this.onNewPost } />
+        <ChatBar userName={ this.state.currentUser } onNewPost={ this.onNewPost } onUserNameChange={ this.onUserNameChange } />
       </div>
     );
   }

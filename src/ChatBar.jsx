@@ -11,9 +11,17 @@ class ChatBar extends Component {
       }
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.changeUserName = this.changeUserName.bind(this);
   }
 
-
+  changeUserName(event) {
+    if(event.key == 'Enter') {
+      const state = {
+        error: ''
+      };
+      this.props.onUserNameChange(event.target.value);
+    }
+  };
 
   handleKeyPress(event) {
     // Works for object database
@@ -30,8 +38,13 @@ class ChatBar extends Component {
     console.log("Rendering <ChatBar/>");
     return (
       <footer className="chatbar">
-        <input className="chatbar-username" defaultValue={ this.props.userName.name } placeholder="Your Name (Optional)" />
-        <input className="chatbar-message" placeholder="Type a message and hit ENTER" onKeyPress={ this.handleKeyPress } />
+        <input className="chatbar-username"
+          defaultValue={ this.props.userName.name }
+          placeholder="Your Name (Optional)"
+          onKeyPress={ this.changeUserName } />
+        <input className="chatbar-message"
+          placeholder="Type a message and hit ENTER"
+          onKeyPress={ this.handleKeyPress } />
       </footer>
     );
   }
