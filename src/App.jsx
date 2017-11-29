@@ -18,8 +18,10 @@ class App extends Component {
   //Adds to state and will update page on new message
   onNewPost(content) {
     console.log('from app', content);
+    let userName = this.state.currentUser.name;
+    if (!userName) userName = 'anonymous';
     const newMessage = {
-      username: this.state.currentUser.name,
+      username: userName,
       content: content
     };
     this.socket.send(JSON.stringify(newMessage));
