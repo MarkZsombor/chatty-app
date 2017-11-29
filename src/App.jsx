@@ -21,20 +21,37 @@ class App extends Component {
       }
       ]
     };
+    this.onNewPost = this.onNewPost.bind(this);
   }
 
-  componentDidMount() {
-    console.log("componentDidMount <App />");
-    setTimeout(() => {
-      console.log("Simulating incoming message");
-      // Add a new message to the list of messages in the data store
-      const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
-      const messages = this.state.messages.concat(newMessage)
-      // Update the state of the app component.
-      // Calling setState will trigger a call to render() in App and all child components.
-      this.setState({messages: messages})
-    }, 3000);
+  //Adds to state and will update page on new message
+  onNewPost(content) {
+    console.log('from app', content);
+    console.log('number of messages hopefully', this.state.messages.length);
+    // const newId = this.state.messages.length + 1;
+    // console.log('newid', newId);
+    // const currentUser = this.state.currentUser.name;
+    // console.log('currentname', currentUser);
+    const newMessage = {
+      id: this.state.messages.length + 1,
+      username: this.state.currentUser.name,
+      content: content
+    };
+    const messages = this.state.messages.concat(newMessage)
+    this.setState({messages: messages})
   }
+
+
+  // componentDidMount() {
+  //   console.log("componentDidMount <App />");
+  //   setTimeout(() => {
+  //     console.log("Simulating incoming message");
+  //     // Add a new message to the list of messages in the data store
+  //     const newMessage = {id: 3, username: "xXxHellspawn14xXx", content: "Anyone know where I can buy some fresh goats blood?"};
+  //     const messages = this.state.messages.concat(newMessage)
+  //     this.setState({messages: messages})
+  //   }, 3000);
+  // }
 
   render() {
     console.log("Rendering </App>");
@@ -42,7 +59,7 @@ class App extends Component {
       <div>
         <NavBar />
         <MessageList messages={ this.state.messages } />
-        <ChatBar userName={ this.state.currentUser } />
+        <ChatBar userName={ this.state.currentUser } onNewPost={ this.onNewPost } />
       </div>
     );
   }

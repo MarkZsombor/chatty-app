@@ -14,8 +14,3 @@ class Message extends Component {
 }
 export default Message;
 
-      // <div>
-      //   <span className="message-username">{item.userName}</span>
-      //   <span className="message-content">{item.message}</span>
-      // // </div>
-
