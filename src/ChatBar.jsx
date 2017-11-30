@@ -11,18 +11,13 @@ class ChatBar extends Component {
       }
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.changeUserNameEnter = this.changeUserNameEnter.bind(this);
     this.changeUserNameBlur = this.changeUserNameBlur.bind(this);
+    this.changeUserNameEnter = this.changeUserNameEnter.bind(this);
   }
 
-  //Changes username when enter is pressed while focus is on name input
+  //Changes to message input when enter is pressed on name input
   changeUserNameEnter(event) {
     if(event.key == 'Enter') {
-      const state = {
-        error: ''
-      };
-      this.props.onUserNameChange(event.target.value);
-      //changes the screen focus to the message input on enter
       this.refs.message.focus();
     }
   };
@@ -42,7 +37,13 @@ class ChatBar extends Component {
       const state = {
         error: ''
       };
-      this.props.onNewPost(event.target.value);
+      let newMessage = {
+        type: 'standardMsg',
+        content: event.target.value
+      }
+      // newMessage = JSON.stringify(newMessage);
+      console.log('new message', newMessage)
+      this.props.onNewPost(newMessage);
       event.target.value = "";
     }
   };

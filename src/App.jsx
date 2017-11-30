@@ -9,28 +9,41 @@ class App extends Component {
     this.socket = null;
     this.state = {
       currentUser: {name: 'Mark'},
-      messages : []
+      messages: [],
+      onlineUsers: 0
     };
     this.onNewPost = this.onNewPost.bind(this);
     this.onUserNameChange = this.onUserNameChange.bind(this);
   }
 
   //Adds to message list and will update page on new message
-  onNewPost(content) {
-    console.log('from app', content);
+  onNewPost(object) {
+    console.log('from app', object);
     let userName = this.state.currentUser.name;
     //If no current username, give a default value
     if (!userName) userName = 'anonymous';
     const newMessage = {
       username: userName,
-      content: content
+      content: object.content,
+      type: object.type
     };
+    console.log('in app new message', newMessage);
     this.socket.send(JSON.stringify(newMessage));
   }
 
   //changes state of currentUser
   onUserNameChange(newName) {
-    this.setState({currentUser: {name: newName }});
+    let oldName = this.state.currentUser.name;
+    if (oldName !== newName) {
+      console.log('name changed');
+      let newMessage = {
+      content: `User ${oldName} changed their name to ${newName}`,
+      type: 'nameChange'
+      };
+      console.log('new message', newMessage)
+      this.socket.send(JSON.stringify(newMessage));
+      this.setState({currentUser: {name: newName }});
+    }
   }
 
   componentDidMount() {
@@ -50,7 +63,7 @@ class App extends Component {
     console.log("Rendering </App>");
     return (
       <div>
-        <NavBar />
+        <NavBar onlineUsers={ this.state.onlineUsers } />
         <MessageList messages={ this.state.messages } />
         <ChatBar userName={ this.state.currentUser }
           onNewPost={ this.onNewPost }
