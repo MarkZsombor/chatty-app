@@ -29,7 +29,9 @@ wss.on('connection', (ws) => {
   console.log('Users Online', online);
   let onlineNotification = {
     onlineUsers: online,
-    type: "usercountupdate"
+    type: "usercountupdate",
+    content: "A new user has connected",
+    id: newId()
   }
   clients.forEach((client) => {
     if (client.readyState == ws.OPEN) {
@@ -56,7 +58,9 @@ wss.on('connection', (ws) => {
     console.log(online);
     let onlineNotification = {
       onlineUsers: online,
-      type: "usercountupdate"
+      type: "usercountupdate",
+      content: "A user has left the chatroom",
+      id: newId()
     }
     clients.forEach((client) => {
       if (client.readyState == ws.OPEN) {

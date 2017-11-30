@@ -61,7 +61,8 @@ class App extends Component {
       console.log('in app msg', msg);
       //take usercount updates and updates state, else posts msg
       if (msg.type === "usercountupdate") {
-        this.setState({onlineUsers: msg.onlineUsers});
+        this.setState({ onlineUsers: msg.onlineUsers });
+        this.setState({messages: this.state.messages.concat(msg)});
       } else {
         this.setState({messages: this.state.messages.concat(msg)});
       }

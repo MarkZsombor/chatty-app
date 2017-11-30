@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class Message extends Component {
   render() {
     console.log("Rendering <Message/>");
-    console.log('type', this.props.value.type);
+    console.log('in msg the message', this.props.value);
     if (this.props.value.type === 'standardMsg') {
       return (
         <div className="message">
