@@ -8,9 +8,9 @@ class App extends Component {
     super(props);
     this.socket = null;
     this.state = {
-      currentUser: {name: 'Mark'},
+      currentUser: {name: ''},
       messages: [],
-      onlineUsers: 0
+      onlineUsers: 1
     };
     this.onNewPost = this.onNewPost.bind(this);
     this.onUserNameChange = this.onUserNameChange.bind(this);
@@ -35,6 +35,7 @@ class App extends Component {
   onUserNameChange(newName) {
     let oldName = this.state.currentUser.name;
     if (oldName !== newName) {
+      if (!oldName) oldName = 'anonymous';
       console.log('name changed');
       let newMessage = {
       content: `User ${oldName} changed their name to ${newName}`,
@@ -48,16 +49,25 @@ class App extends Component {
 
   componentDidMount() {
     this.socket = new WebSocket("ws://localhost:3001");
+
     //Logs a message when client connects to server
     this.socket.addEventListener('open', function (event) {
       console.log('Hello Server!');
     });
-    //takes message from server and renders it to the screen
+
+    //takes message from server and updates the stat
     this.socket.addEventListener('message', (msg) => {
       msg = JSON.parse(msg.data);
-      this.setState({messages: this.state.messages.concat(msg)});
+      console.log('in app msg', msg);
+      //take usercount updates and updates state, else posts msg
+      if (msg.type === "usercountupdate") {
+        this.setState({onlineUsers: msg.onlineUsers});
+      } else {
+        this.setState({messages: this.state.messages.concat(msg)});
+      }
     });
   }
+
 
   render() {
     console.log("Rendering </App>");
