@@ -39,8 +39,8 @@ class App extends Component {
       if (!oldName) oldName = 'anonymous';
       console.log('name changed');
       let newMessage = {
-      content: `User ${oldName} changed their name to ${newName}`,
-      type: 'nameChange'
+        content: `User ${oldName} changed their name to ${newName}`,
+        type: 'nameChange'
       };
       this.socket.send(JSON.stringify(newMessage));
       this.setState({currentUser: {name: newName }});
