@@ -30,26 +30,24 @@ class ChatBar extends Component {
     this.props.onUserNameChange(event.target.value);
   };
 
-
+  //When enter is pressed sends new message to App
   handleKeyPress(event) {
-    // Works for object database
     if(event.key == 'Enter') {
       const state = {
         error: ''
       };
       let newMessage = {
-        type: 'standardMsg',
+        type: 'PostMessage',
         content: event.target.value
       }
       // newMessage = JSON.stringify(newMessage);
-      console.log('new message', newMessage)
+      // console.log('new message', newMessage)
       this.props.onNewPost(newMessage);
       event.target.value = "";
     }
   };
 
   render() {
-    console.log("Rendering <ChatBar/>");
     return (
       <footer className="chatbar">
         <input className="chatbar-username"

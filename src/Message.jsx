@@ -2,12 +2,11 @@ import React, {Component} from 'react';
 
 class Message extends Component {
   render() {
-    console.log("Rendering <Message/>");
-    console.log('in msg the message', this.props.value);
-    if (this.props.value.type === 'standardMsg') {
+    //depending on message type will render in different divs, controlling the styling
+    if (this.props.value.type === 'MessageFromServer') {
       return (
         <div className="message">
-          <span className="message-username">{this.props.value.username}</span>
+          <span className="message-username" style={{color: this.props.value.color}}>{this.props.value.username}</span>
           <span className="message-content">{this.props.value.content}</span>
         </div>
       );

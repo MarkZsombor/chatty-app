@@ -18,15 +18,19 @@ const server = express()
 const wss = new SocketServer({ server });
 const clients = [];
 
-// Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
+// Lets have some fun colors
+var colors = [ 'red', 'green', 'blue', 'magenta', 'purple', 'plum', 'orange', 'pink', 'brown' ];
+// ... in random order
+colors.sort(function(a,b) { return Math.random() > 0.5; } );
+
+
+// When a client connects they are assigned a socket, represented by the ws parameter in the callback.
 wss.on('connection', (ws) => {
-  //keeps track of users logging on and updates page
+  //keeps track of users logging on and notifies app
+  let userColor = null;
   online ++;
   clients.push(ws);
   console.log('Client connected');
-  console.log('Users Online', online);
   let onlineNotification = {
     onlineUsers: online,
     type: "usercountupdate",
@@ -39,10 +43,23 @@ wss.on('connection', (ws) => {
     }
   });
 
+  //assigns a user a color if they don't already have one
+  if(!userColor) {
+    userColor = colors.shift();
+    setColor = {
+      type: "color",
+      color: userColor
+    };
+  ws.send(JSON.stringify(setColor));
+  }
+
+
   // Takes a message from a client, adds a unique id, and sends it to all clients
   ws.on('message', (message) => {
     message = JSON.parse(message);
     message.id = newId();
+    //changes message type to distinguish messages from server
+    if (message.type === 'PostMessage') message.type = 'MessageFromServer';
     clients.forEach((client) => {
       if (client.readyState == ws.OPEN) {
         client.send(JSON.stringify(message));
@@ -53,9 +70,10 @@ wss.on('connection', (ws) => {
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
     console.log('Client disconnected');
-    //keep track of users logging off and updates page
+    //keep track of users logging off and notifies app
     online--;
-    console.log(online);
+    //decouples user from color and returns it to the pool
+    if (userColor) colors.push(userColor);
     let onlineNotification = {
       onlineUsers: online,
       type: "usercountupdate",

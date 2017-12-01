@@ -10,28 +10,29 @@ class App extends Component {
     this.state = {
       currentUser: {name: ''},
       messages: [],
-      onlineUsers: 1
+      onlineUsers: 1,
+      color: 'black'
     };
     this.onNewPost = this.onNewPost.bind(this);
     this.onUserNameChange = this.onUserNameChange.bind(this);
   }
 
-  //Adds to message list and will update page on new message
+  //Takes a new message and sends it to the server
   onNewPost(object) {
-    console.log('from app', object);
     let userName = this.state.currentUser.name;
     //If no current username, give a default value
     if (!userName) userName = 'anonymous';
     const newMessage = {
       username: userName,
       content: object.content,
-      type: object.type
+      type: object.type,
+      color: this.state.color
     };
-    console.log('in app new message', newMessage);
+    // console.log('in app new message', newMessage);
     this.socket.send(JSON.stringify(newMessage));
   }
 
-  //changes state of currentUser
+  //Records the new name of the user and sends a name change notification to the server
   onUserNameChange(newName) {
     let oldName = this.state.currentUser.name;
     if (oldName !== newName) {
@@ -41,7 +42,6 @@ class App extends Component {
       content: `User ${oldName} changed their name to ${newName}`,
       type: 'nameChange'
       };
-      console.log('new message', newMessage)
       this.socket.send(JSON.stringify(newMessage));
       this.setState({currentUser: {name: newName }});
     }
@@ -55,14 +55,14 @@ class App extends Component {
       console.log('Hello Server!');
     });
 
-    //takes message from server and updates the stat
+    //takes message from server and updates the state
     this.socket.addEventListener('message', (msg) => {
       msg = JSON.parse(msg.data);
-      console.log('in app msg', msg);
-      //take usercount updates and updates state, else posts msg
       if (msg.type === "usercountupdate") {
         this.setState({ onlineUsers: msg.onlineUsers });
         this.setState({messages: this.state.messages.concat(msg)});
+      } else if (msg.type === "color") {
+        this.setState({color: msg.color});
       } else {
         this.setState({messages: this.state.messages.concat(msg)});
       }
@@ -71,11 +71,10 @@ class App extends Component {
 
 
   render() {
-    console.log("Rendering </App>");
     return (
       <div>
         <NavBar onlineUsers={ this.state.onlineUsers } />
-        <MessageList messages={ this.state.messages } />
+        <MessageList messages={ this.state.messages } color={ this.state.color } />
         <ChatBar userName={ this.state.currentUser }
           onNewPost={ this.onNewPost }
           onUserNameChange={ this.onUserNameChange } />
