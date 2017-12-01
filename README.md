@@ -1,45 +1,44 @@
-React Boilerplate
-=====================
+# Chatty App Project
 
-A minimal and light dev environment for ReactJS.
+Chatty App is a single page chat app build using ReactJS and Websockets with an express server.
 
-### Usage
+Chatty App was built as the Week 5 project in the Lighthouse Labs Bootcamp.
 
-Clone the boilerplate and create your own git repo.
+## Final Product
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
+!["Screenshot of the main page"](https://github.com/MarkZsombor/chatty-app/blob/master/docs/chatty.png)
 
-Install the dependencies and start the server.
+## Getting Started
 
-```
-npm install
-npm start
-open http://localhost:3000
-```
+- Install dependencies using the `npm install` command.
+- Start the express server using the `npm start` command.
+- In a second terminal window go to the /chatty-server sub-directory
+- Install additional dependencies using the `npm install` command.
+- Start the websockets server using the `npm start` command.
+- Go to <http://localhost:3000/> in your browser.
 
-### Static Files
+## Dependencies
 
-You can store static files like images, fonts, etc in the `build` folder.
+- Babel
+- CSS Loader
+- Node Sass
+- Sass Loader
+- SockJS
+- Style Loader
+- Webpack
+- Express
+- UUID
+- Websockets
 
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
+## Features and Functionality
 
-### Linting
+- Multiple users can connect and send messages.
+- Messages update on screen in real time.
+- Users can change their usernames.
+- Users will recieve notifications when users enter the chat room, leave the chatroom, or change their username.
+- Users will be assigned a chat color that will last until they disconnect from the server.
+- Total users in the chat room is displayed.
 
-This boilerplate project includes React ESLint configuration.
+## Future Goals
 
-```
-npm run lint
-```
-
-### Dependencies
-
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+Add user database

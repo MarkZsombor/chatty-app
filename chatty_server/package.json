@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "main": "index.js",
-  "author": "",
+  "author": "Mark Zsombor",
+  "homepage": "https://github.com/MarkZsombor/chatty-app",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
