@@ -10,6 +10,7 @@ Chatty App was built as the Week 5 project in the Lighthouse Labs Bootcamp.
 
 ## Getting Started
 
+- Clone the repository
 - Install dependencies using the `npm install` command.
 - Start the express server using the `npm start` command.
 - In a second terminal window go to the /chatty-server sub-directory
